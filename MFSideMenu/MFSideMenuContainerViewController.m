@@ -387,6 +387,11 @@ typedef enum {
     leftFrame.size.width = self.leftMenuWidth;
     leftFrame.origin.x = (self.menuSlideAnimationEnabled) ? -1*leftFrame.size.width / self.menuSlideAnimationFactor : 0;
     leftFrame.origin.y = 0;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+        CGFloat barSize =  MIN(statusBarSize.width, statusBarSize.height);
+        leftFrame.origin.y = leftFrame.origin.y+barSize;
+    }
     [self.leftMenuViewController view].frame = leftFrame;
     [self.leftMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
 }
@@ -397,6 +402,11 @@ typedef enum {
     rightFrame.size.width = self.rightMenuWidth;
     rightFrame.origin.y = 0;
     rightFrame.origin.x = self.menuContainerView.frame.size.width - self.rightMenuWidth;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+        CGFloat barSize =  MIN(statusBarSize.width, statusBarSize.height);
+        rightFrame.origin.y = rightFrame.origin.y+barSize;
+    }
     if(self.menuSlideAnimationEnabled) rightFrame.origin.x += self.rightMenuWidth / self.menuSlideAnimationFactor;
     [self.rightMenuViewController view].frame = rightFrame;
     [self.rightMenuViewController view].autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
